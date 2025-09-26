@@ -1,4 +1,4 @@
-module zoom_out_one (
+module zoom_out_two(
     enable,
     data_in,
     data_out
