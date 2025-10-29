@@ -273,7 +273,7 @@ module main(
                 FLAG_DONE <= 1'b0;
                 if (last_instruction == STORE) begin
                     addr_wr_mem1 <= MEM_ADDR;
-                    data_to_write_mem1 <= DATA_IN;
+                    data_in_mem1 <= DATA_IN;
                     wren_mem1 <= 1'b1;
                     uc_state <= WAIT_WR_OR_RD;
                     counter_rd_wr <= 2'b00;
