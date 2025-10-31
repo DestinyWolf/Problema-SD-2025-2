@@ -7,11 +7,11 @@
 </h1>
 </div>
 Este coprocessador foi desenvolvido como complemento para o segundo problema de Sistemas Digitais. Tem como objetivo ser um Co-Processador para a realização de zoom in e zoom out em imagens de 320 por 240 pixeis.
+
 <details>
 <summary><h1>Estrutura do CoProcessador</h1></summary>
 
-# Estrutura do CoProcessador
-
+## Estrutura do CoProcessador
 
 <div align="center">
   <figure>
@@ -37,7 +37,7 @@ O CoProcessador desenvolvido implementa uma arquitetura simples, sem pipeline ou
 <details>
 <summary><h2>Tempo de execução das instruções</h2></summary>
 
-## Tempo de execução das instruções
+### Tempo de execução das instruções
 
 Para cada operação de leitura nas memorias são necessarias 3 ciclos de clock de 100 MHz. alem disso, é necessario mais um ciclo para a finalização e retorno para o estado de espera.
 Para a execução de algoritmos o numero de ciclos necessarios é muito superior devido a quantidade de passos a serem execultados.
@@ -51,7 +51,7 @@ Para a execução de algoritmos o numero de ciclos necessarios é muito superior
 <details>
 <summary><h1>Barramentos</h1></summary>
 
-# Barramentos
+## Barramentos
 
 O modulo do Coprocessador conta com dois barramentos de entrada e dois de saida
 
@@ -65,12 +65,12 @@ Flags|Output|4 Bits
 <details>
 <summary><h3>Barramento de Instruções</h3></summary>
 
-## Barramento de instruções
+### Barramento de instruções
 
 Este barramento é responsavel por enviar ao Coprocessador as instruções a serem execultadas. O barramento de instruções é de 29 bits sendo 3 deles dedicados aos [8 OP Codes](#conjunto-de-instruções-isa)
 que o coprocessador possui, as intruções possuem campos e formatos diferentes, sendo assim nem todas as instruções utilizam os 29 bits.
 
->[!NOTE]
+> [!NOTE]
 > No coprocessador, esses dados estão seccionados em 4 barramentos distintos mas que podem ser atribuidos a um unico **PIO**.
 
 </details>
@@ -78,15 +78,13 @@ que o coprocessador possui, as intruções possuem campos e formatos diferentes,
 <details>
 <summary><h3>Barramento de habilitação do funcioinamento (Enable)</h3></summary>
 
-## Barramento de habilitação do funcioinamento (Enable)
+### Barramento de habilitação do funcioinamento (Enable)
 
 Este barramento serve para informa ao processador que deve ser realizada a instrução que estiver no barramento de instruções. Ele é ativo em nivel logico alto e desativado em nivel logico baixo.
 
-
 > [!NOTE]
 > O sinal ENABLE é utilizado para sincronismo entre o coprocessador e o barramento de instruções.
-
-> WARNING
+> [!WARNING]
 > **A cada operação deve se alterar o valor para 1 apenas após inserir a instrução no barramento de instruçõe ser realizada, seu valor deve retornar a zero antes da execução da proxima instrução.**
 
 </details>
@@ -94,7 +92,7 @@ Este barramento serve para informa ao processador que deve ser realizada a instr
 <details>
 <summary><h3>Barramento de Saida (DATA_OUT)</h3></summary>
 
-## Barramento de Saida (DATA_OUT)
+### Barramento de Saida (DATA_OUT)
 
 O barramento de saida armazena o valor do pixel da imagem original ou da imagem alterada com base no endereço solicitado pela instrução de load. Este valor permanece no barramento até que uma nova instrução seja solicitada.
 
@@ -103,9 +101,9 @@ O barramento de saida armazena o valor do pixel da imagem original ou da imagem 
 <details>
 <summary><h3>Barramento de Flags</h3></summary>
 
-## Barramento de Flags
+### Barramento de Flags
 
-O barramento de flags é responsavel por armazenar as flags de _done_, _erro_, *zoom_maximo* e *zoom_minimo*. No coprocessador essas flags estão separadas em quatro saidas distindas, mas podem ser associadas a um unico **PIO**, já que cada flag se trata de um valor unitario. Quando uma das flags for ativa seu valor logico será de 1 , caso contrario seu valor será 0.
+O barramento de flags é responsavel por armazenar as flags de _done_, _erro_, _zoom_maximo_ e _zoom_minimo_. No coprocessador essas flags estão separadas em quatro saidas distindas, mas podem ser associadas a um unico **PIO**, já que cada flag se trata de um valor unitario. Quando uma das flags for ativa seu valor logico será de 1 , caso contrario seu valor será 0.
 
 Flag|Significado
 :----|:-----------
@@ -114,32 +112,28 @@ Flag|Significado
 **Min_zoom** | Flag ativada quando o zoom minimo foi alcaçado, não sendo possivel efetuar uma operação de zoom out após está flag estar ativa.
 **Done** | Flag ativada quando uma operação é finalizada.
 
-
 </details>
 </details>
 
 <details>
 <summary><h1>Conjunto de Instruções (ISA)</h1></summary>
 
-# Conjunto de instruções (ISA)
+## Conjunto de instruções (ISA)
 
 O coprocessador conta com um conjunto de 8 instruções que podem ser utilizadas para realizar operações aritmeticas, de armazenamento e de leitura de dados.
-
-> WARNING
+> [!WARNING]
 > Uma instrução não é uma função, uma instrução é uma sequencia de bits que dizem ao coprocessador o que fazer, não possui um "retorno" como a chamada de uma função. O que acontece é que ao fim da execução de uma instrução, o coprocessador podera colocar um valor no [barramento de saida](#barramento-de-saida-data_out) e/ou atualizar os valores das [flags](#barramento-de-flags), mas não são todas as intruções que possuem uma escrita no barramento de saida ou no barramento de flags.
-
->[!NOTE]
+> [!NOTE]
 > Nem todas as operações utilizão todos os 29 bits disponiveis, observar os campos de cada instrução
 > para evitar perda de dados ou problemas de funcionamento.
-
->[!WARNING]
+> [!WARNING]
 > Os campos das instruções de dos dados **saem do mais significativo para o menos**, ou seja, o campo do opcode da instrução começa
 > no bit 0 e vai até o bit 2 e o mesmo se aplica aos demais campos de acordo com a instrução a ser utilizada.
 
 <details>
 <summary><h3>Tabela de Instruções</h3></summary>
 
-## Tabela de Instruções
+### Tabela de Instruções
 
  OP Code | Nome da operação | Descrição
  :------ | :-------- |:-------
@@ -154,17 +148,16 @@ O coprocessador conta com um conjunto de 8 instruções que podem ser utilizadas
 
 Descrição detalhada de cada uma das instruções com seus respectivos campos e possiveis [flags](#barramento-de-flags)
 
->[!NOTE]
+> [!NOTE]
 > A unica instrução capaz de retornar um valor pelo [barramento de dados](#barramento-de-saida-data_out) é a intrução de [LOAD](#load), todas as outras não retornam ou alteram
 > o valor que esta no barramento
-
-> WARNING
+> [!WARNING]
 > Para realizar uma operação sobe uma imagem de tamanho maximo 320x240 é necessario realizar a operação de [STORE](#store) 76800 vezes, sabendo que a cada vez que a instrução é realizada, é armazenado o valor de um pixel na memoria A que guarda a imagem original.
 
 <details>
 <summary><b>REFRESH instruction</b></summary>
 
-### REFRESH
+#### REFRESH
 
 **Campos da instrução REFRESH**
 
@@ -192,7 +185,7 @@ Não usados | | 26 bits| 28| 3
 <details>
 <summary><b>LOAD instruction</b></summary>
 
-### LOAD
+#### LOAD
 
 **Campos da instrução LOAD**
 
@@ -203,7 +196,7 @@ Address   | Endereço do pixel a ser lido | 17 bits| 19 | 3
 Sel Mem   | Memoria a ser lida | 1 bit| 20 | 20
 Não usados| | 9 bits| 28| 21
 
->[!NOTE]
+> [!NOTE]
 > Para endereçamento o valor pode ir de 0 a 76799, case seja passado um valor maior que este a flag de **erro** será ativa.
 
 - **Flags que podem ser ativadas**
@@ -225,7 +218,7 @@ Não usados| | 9 bits| 28| 21
 <details>
 <summary><b>STORE instruction</b></summary>
 
-### STORE
+#### STORE
 
 **Campos da instrução STORE**
 
@@ -236,11 +229,10 @@ Address| endereçamento que o pixel será escrito | 17 bits | 19 | 3
 Sel Mem| Campo não utilizado| 1 bit| 20 | 20
 Valor| valor do pixel a ser escrito com 8 bits, em escala de cinza| 8 bits | 28 | 21
 
->[!NOTE]
+> [!NOTE]
 > O valor maximo para endereçamento é de 76799, caso seja passado um valor maior que este a flag de erro será ativada.
-
-> WARNING
-> Ao escrever um pixel na memoria, nenhuma alteração será exibida até que um algoritimo de zoom seja realizado ou ate que a instrução (REFRESH)[#refresh] seja chamada.
+> [!WARNING]
+> Ao escrever um pixel na memoria, nenhuma alteração será exibida até que um algoritimo de zoom seja realizado ou ate que a instrução [REFRESH](#refresh) seja chamada.
 
 - **Flags que podem ser ativadas**
   - `Error` Endereçamento incorreto ou falha na escrita.
@@ -262,7 +254,7 @@ Valor| valor do pixel a ser escrito com 8 bits, em escala de cinza| 8 bits | 28 
 <details>
 <summary><b>Vizinho mais proximo para zoom in (NHI_ALG instruction)</b></summary>
 
-### Vizinho mais proximo para zoom in (NHI_ALG instruction)
+#### Vizinho mais proximo para zoom in (NHI_ALG instruction)
 
 **Campos da instrução NHI_ALG**
 
@@ -292,7 +284,7 @@ Não usados| | 26 bits| 28|3
 <details>
 <summary><b>Replicação de Pixel (PR_ALG instruction)</b></summary>
 
-### Replicação de Pixel (PR_ALG instruction)
+#### Replicação de Pixel (PR_ALG instruction)
 
 **Campos da instrução PR_ALG**
 
@@ -322,7 +314,7 @@ Não usados| | 26 bits| 28|3
 <details>
 <summary><b>Vizinho mais proximo para zoom out (NH_ALG instruction)</b></summary>
 
-### Vizinho mais proximo para zoom out (NH_ALG instruction)
+#### Vizinho mais proximo para zoom out (NH_ALG instruction)
 
 **Campos da instrução NH_ALG**
 
@@ -352,7 +344,7 @@ Não usados| | 26 bits| 28|3
 <details>
 <summary><b>Media de blocos (BA_ALG instruction)</b></summary>
 
-### Media de blocos (BA_ALG instruction)
+#### Media de blocos (BA_ALG instruction)
 
 **Campos da instrução MULM**
 
@@ -382,7 +374,7 @@ Não usados| | 26 bits| 28|3
 <details>
 <summary><b>RST instruction</b></summary>
 
-### RST
+#### RST
 
 **Campos da instrução RST**
 
@@ -406,5 +398,4 @@ Não usado| | 26 bits | 28 | 3
 </div>
 
 </details>
-
 </details>
