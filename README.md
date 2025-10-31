@@ -144,7 +144,7 @@ O coprocessador conta com um conjunto de 8 instruções que podem ser utilizadas
 
  OP Code | Nome da operação | Descrição
  :------ | :-------- |:-------
- 000 | [REFRESH](#nop) |Informa ao coprocessador que uma nova imagem foi carregada na memoria _A_ e atualiza a memória de exibição para essa nova imagem.
+ 000 | [REFRESH](#refresh) |Informa ao coprocessador que uma nova imagem foi carregada na memoria _A_ e atualiza a memória de exibição para essa nova imagem.
  001 | [LOAD](#load) |carrega no barramento de [SAIDA](#barramento-de-saida-data_out) o valor do pixel associado ao endereço solicitado na instrução.
  010 | [STORE](#store) |Usado para guardar um valor de pixel na memoria A.
  011 | [Vizinho mais proximo para zoom in](#vizinho-mais-proximo-para-zoom-in-nhi_alg-instruction) |Usado para realizar operação de vizinho mais proximo para zoom in.
