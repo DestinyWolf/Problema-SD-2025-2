@@ -1,5 +1,13 @@
 # CoProcessador para o segundo problema do PBL de Sistema Digitais
 
+```mermaid
+graph TD;
+  A-->B;
+  B-->C;
+  C-->D;
+  A-->D;
+```
+
 <div align="center">
 <h1>
 
