@@ -144,14 +144,14 @@ O coprocessador conta com um conjunto de 8 instruções que podem ser utilizadas
 
  OP Code | Nome da operação | Descrição
  :------ | :-------- |:-------
- 000 | [NOP](#nop) |Informa ao coprocessador não realizar nada, usado para bolhas.
+ 000 | [REFRESH](#nop) |Informa ao coprocessador que uma nova imagem foi carregada na memoria _A_ e atualiza a memória de exibição para essa nova imagem.
  001 | [LOAD](#load) |carrega no barramento de [SAIDA](#barramento-de-saida-data_out) o valor do pixel associado ao endereço solicitado na instrução.
  010 | [STORE](#store) |Usado para guardar um valor de pixel na memoria A.
  011 | [Vizinho mais proximo para zoom in](#vizinho-mais-proximo-para-zoom-in-nhi_alg-instruction) |Usado para realizar operação de vizinho mais proximo para zoom in.
  100 | [Replicação de pixel](#replicação-de-pixel-pr_alg-instruction) |Usado para realizar operação de replicação de pixel para zoom in.
  101 | [Vizinho mais proximo para zoom out](#vizinho-mais-proximo-para-zoom-out-nh_alg-instruction) |Usado para realizar operação de vizinho mais proximo para zoom out.
  110 | [Média de blocos](#media-de-blocos-ba_alg-instruction) |Usado para realizar operação de media de blocos para zoom out.
- 111 | [Reset](#rst) |Usado para reiniciar o coprocessador, retornar o zoom para o padrão e a imagem para a default.
+ 111 | [Reset](#rst) |Usado para reiniciar o coprocessador, retornar o zoom para o padrão e a imagem para a que esta armazenada na memoria _A_.
 
 Descrição detalhada de cada uma das instruções com seus respectivos campos e possiveis [flags](#barramento-de-flags)
 
@@ -163,11 +163,11 @@ Descrição detalhada de cada uma das instruções com seus respectivos campos e
 > Para realizar uma operação sobe uma imagem de tamanho maximo 320x240 é necessario realizar a operação de [STORE](#store) 76800 vezes, sabendo que a cada vez que a instrução é realizada, é armazenado o valor de um pixel na memoria A que guarda a imagem original.
 
 <details>
-<summary><b>NOP instruction</b></summary>
+<summary><b>REFRESH instruction</b></summary>
 
-### NOP
+### REFRESH
 
-**Campos da instrução NOP**
+**Campos da instrução REFRESH**
 
 Nome do Campo| Descrição | tamanho |Bit final| Bit inicial
 :---------|:---------|:---------|:---------|:----------
@@ -182,7 +182,7 @@ Não usados | | 26 bits| 28| 3
     <img src="docs/instrução nop.jpg" width="600px"/>
     <figcaption>
       <p align="center">
-        <b>Figura 2</b> - Estrutura da instrução NOP
+        <b>Figura 2</b> - Estrutura da instrução REFRESH
       </p>
     </figcaption>
   </figure>
