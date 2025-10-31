@@ -1,21 +1,50 @@
 module main(
     // Portas de Entrada
-    input CLOCK_50,
-    input [2:0] INSTRUCTION,
-    input [7:0] DATA_IN,
-    input [16:0] MEM_ADDR,
-    input SEL_MEM,
-    input ENABLE,
+    CLOCK_50,
+    INSTRUCTION,
+    DATA_IN,
+    MEM_ADDR,
+    SEL_MEM,
+    ENABLE,
 
     // Portas de Saída e Debug
-    output reg [7:0] DATA_OUT,
-    output reg FLAG_DONE,
-    output reg FLAG_ERROR,
-    output FLAG_ZOOM_MAX,
-    output FLAG_ZOOM_MIN,
-    output [7:0] VGA_R, output [7:0] VGA_B, output [7:0] VGA_G,
-    output VGA_BLANK_N, output VGA_H_SYNC_N, output VGA_V_SYNC_N, output VGA_CLK, output VGA_SYNC
+    DATA_OUT,
+    FLAG_DONE,
+    FLAG_ERROR,
+    FLAG_ZOOM_MAX,
+    FLAG_ZOOM_MIN,
+    VGA_R,
+    VGA_B, 
+    VGA_G,
+    VGA_BLANK_N,
+    VGA_H_SYNC_N, 
+    VGA_V_SYNC_N, 
+    VGA_CLK, 
+    VGA_SYNC
 );
+
+
+    input CLOCK_50;
+    input [2:0] INSTRUCTION;
+    input [7:0] DATA_IN;
+    input [16:0] MEM_ADDR;
+    input SEL_MEM;
+    input ENABLE;
+
+    // Portas de Saída e Debug
+    output reg [7:0] DATA_OUT;
+    output reg FLAG_DONE;
+    output reg FLAG_ERROR;
+    output FLAG_ZOOM_MAX;
+    output FLAG_ZOOM_MIN;
+    output [7:0] VGA_R;
+    output [7:0] VGA_B; 
+    output [7:0] VGA_G;
+    output VGA_BLANK_N;
+    output VGA_H_SYNC_N; 
+    output VGA_V_SYNC_N; 
+    output VGA_CLK;
+    output VGA_SYNC;
     //================================================================
     // 1. Definições, Clocks e Sinais
     //================================================================
@@ -27,7 +56,7 @@ module main(
         .outclk_1(clk_25_vga)
     );
 
-    localparam NOP = 3'b000, LOAD = 3'b001, STORE = 3'b010, NHI_ALG = 3'b011;  //Instruções
+    localparam REFRESH_SCREEN = 3'b000, LOAD = 3'b001, STORE = 3'b010, NHI_ALG = 3'b011;  //Instruções
     localparam PR_ALG = 3'b100, BA_ALG = 3'b101, NH_ALG = 3'b110, RESET_INST = 3'b111;  //instruções
     localparam IDLE = 3'b00, READ_AND_WRITE = 3'b001, ALGORITHM = 3'b010, RESET = 3'b011, COPY_READ = 3'b100, COPY_WRITE = 3'b101, WAIT_WR_OR_RD = 3'b111; // estados
 
@@ -261,6 +290,11 @@ module main(
                         last_instruction <= 3'b111;
                         uc_state <= RESET;
                         counter_address <= 17'd0;
+                        counter_rd_wr <= 2'b0;
+                    end else if (INSTRUCTION == REFRESH_SCREEN) begin
+                        last_instruction <= 3'b111;
+                        uc_state <= COPY_READ;
+                        counter_address <= 17'b0;
                         counter_rd_wr <= 2'b0;
                     end
                 end
@@ -774,7 +808,7 @@ module main(
                         end
                         FLAG_DONE <= 1'b1;
                     end else if (last_instruction == STORE) begin
-                        uc_state <= COPY_READ;
+                        uc_state <= IDLE;
                         wren_mem1 <= 1'b0;
                         counter_rd_wr <= 2'b0;
                         counter_address <= 17'd0;
@@ -797,11 +831,11 @@ module main(
     always @(*) begin
           // Endereçamento
 
-          if (last_instruction == RESET_INST || last_instruction == STORE) begin
+        if (last_instruction == RESET_INST || last_instruction == STORE) begin
             addr_for_copy <= counter_address;
-          end else begin
+        end else begin
             addr_mem3 <= counter_address;
-          end
+        end
         
         addr_mem2 <= addr_from_vga;
     end
