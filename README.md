@@ -9,7 +9,7 @@
 Este coprocessador foi desenvolvido como complemento para o segundo problema de Sistemas Digitais. Tem como objetivo ser um Co-Processador para a realização de zoom in e zoom out em imagens de 320 por 240 pixeis.
 
 <details>
-<summary><h1>Estrutura do CoProcessador</h1></summary>
+<summary><h2>Estrutura do CoProcessador</h2></summary>
 
 ## Estrutura do CoProcessador
 
@@ -35,7 +35,7 @@ O CoProcessador desenvolvido implementa uma arquitetura simples, sem pipeline ou
 > Até o presente momento a UEA e a UC estão localizadas no mesmo bloco always, mas serão separadas futuramente, sendo a **UEA** movida para o modulo `Memory Control` e a **UC** permanecendo no bloco always atual.
 
 <details>
-<summary><h2>Tempo de execução das instruções</h2></summary>
+<summary><h3>Tempo de execução das instruções</h3></summary>
 
 ### Tempo de execução das instruções
 
@@ -49,7 +49,7 @@ Para a execução de algoritmos o numero de ciclos necessarios é muito superior
 </details>
 
 <details>
-<summary><h1>Barramentos</h1></summary>
+<summary><h2>Barramentos</h2></summary>
 
 ## Barramentos
 
@@ -116,7 +116,7 @@ Flag|Significado
 </details>
 
 <details>
-<summary><h1>Conjunto de Instruções (ISA)</h1></summary>
+<summary><h2>Conjunto de Instruções (ISA)</h2></summary>
 
 ## Conjunto de instruções (ISA)
 
