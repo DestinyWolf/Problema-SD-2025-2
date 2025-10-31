@@ -34,7 +34,6 @@ O CoProcessador desenvolvido implementa uma arquitetura simples, sem pipeline ou
 > [!NOTE]
 > Até o presente momento a UEA e a UC estão localizadas no mesmo bloco always, mas serão separadas futuramente, sendo a **UEA** movida para o modulo `Memory Control` e a **UC** permanecendo no bloco always atual.
 
-
 <details>
 <summary><h2>Tempo de execução das instruções</h2></summary>
 
@@ -87,7 +86,7 @@ Este barramento serve para informa ao processador que deve ser realizada a instr
 > [!NOTE]
 > O sinal ENABLE é utilizado para sincronismo entre o coprocessador e o barramento de instruções.
 
-> [!WARNING]
+> WARNING
 > **A cada operação deve se alterar o valor para 1 apenas após inserir a instrução no barramento de instruçõe ser realizada, seu valor deve retornar a zero antes da execução da proxima instrução.**
 
 </details>
@@ -126,7 +125,7 @@ Flag|Significado
 
 O coprocessador conta com um conjunto de 8 instruções que podem ser utilizadas para realizar operações aritmeticas, de armazenamento e de leitura de dados.
 
->[!WARNING]
+> WARNING
 > Uma instrução não é uma função, uma instrução é uma sequencia de bits que dizem ao coprocessador o que fazer, não possui um "retorno" como a chamada de uma função. O que acontece é que ao fim da execução de uma instrução, o coprocessador podera colocar um valor no [barramento de saida](#barramento-de-saida-data_out) e/ou atualizar os valores das [flags](#barramento-de-flags), mas não são todas as intruções que possuem uma escrita no barramento de saida ou no barramento de flags.
 
 >[!NOTE]
@@ -159,7 +158,7 @@ Descrição detalhada de cada uma das instruções com seus respectivos campos e
 > A unica instrução capaz de retornar um valor pelo [barramento de dados](#barramento-de-saida-data_out) é a intrução de [LOAD](#load), todas as outras não retornam ou alteram
 > o valor que esta no barramento
 
->[!WARNING]
+> WARNING
 > Para realizar uma operação sobe uma imagem de tamanho maximo 320x240 é necessario realizar a operação de [STORE](#store) 76800 vezes, sabendo que a cada vez que a instrução é realizada, é armazenado o valor de um pixel na memoria A que guarda a imagem original.
 
 <details>
@@ -240,8 +239,8 @@ Valor| valor do pixel a ser escrito com 8 bits, em escala de cinza| 8 bits | 28 
 >[!NOTE]
 > O valor maximo para endereçamento é de 76799, caso seja passado um valor maior que este a flag de erro será ativada.
 
->[!WARNING]
-> Sempre que um dado for escrito, toda a imagem será recarregada na memoria de leitura utilizada pelo vga.
+> WARNING
+> Ao escrever um pixel na memoria, nenhuma alteração será exibida até que um algoritimo de zoom seja realizado ou ate que a instrução (REFRESH)[#refresh] seja chamada.
 
 - **Flags que podem ser ativadas**
   - `Error` Endereçamento incorreto ou falha na escrita.
